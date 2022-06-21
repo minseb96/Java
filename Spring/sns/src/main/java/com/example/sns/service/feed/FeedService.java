@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface FeedService {
-    List<Feed> findFeed();
+    List<Feed> findFeeds();
     Optional<Feed> findFeedById(Long id);
     Feed createFeed(CreateFeedDto createFeedDto);
 }

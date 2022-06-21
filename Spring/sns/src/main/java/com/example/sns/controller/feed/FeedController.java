@@ -2,7 +2,10 @@ package com.example.sns.controller.feed;
 
 import com.example.sns.domain.feed.Feed;
 import com.example.sns.dto.feed.CreateFeedDto;
+import com.example.sns.dto.feed.GetFeedFullInfoDto;
+import com.example.sns.service.feed.FeedFullService;
 import com.example.sns.service.feed.FeedService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,36 +14,39 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping("/feed")
 @Controller
+@RequiredArgsConstructor
 @Slf4j
 public class FeedController {
     private final FeedService feedService;
+    private final FeedFullService feedFullService;
 
-    @Autowired
-    public FeedController(FeedService feedService) {
-        this.feedService = feedService;
+    @PostMapping
+    public String createFeed(@RequestParam String content){
+        Long myUserId = Long.valueOf(1); // TODO: get this value from session
+        String imgUrl = "/image/resources/user-post.jpg"; // TODO: modify this to image upload
+
+        CreateFeedDto createFeedDto = new CreateFeedDto();
+        createFeedDto.setContent(content);
+        createFeedDto.setAuthorId(myUserId);
+        createFeedDto.setImg(imgUrl);
+
+        feedService.createFeed(createFeedDto);
+
+        return "redirect:/";
     }
 
     @GetMapping
     public String getFeedList(Model model) {
-        List<Feed> feeds = feedService.findFeed();
+        List<GetFeedFullInfoDto> feeds = feedFullService.findFeedsFullInfo();
         model.addAttribute("feeds", feeds);
-
-        for (Feed feed : feeds) {
-            log.debug("feed's img : {}", feed.getImg());
-            log.debug("feed's content : {}", feed.getContent());
-            log.debug("--------------------------------------------");
-        }
-
-//        TODO: 서비스를 통해 Feed 배열을 가져오기
-//         Log로 확인해보기
+        model.addAttribute("feedForm", new CreateFeedDto());
         return "feed/newsfeed";
     }
 
     //TODO: API로 Feed를 생성하는 PostMapping 만들기
     @ResponseBody
-    @PostMapping
+    @PostMapping("/api/create")
     public Feed createNewFeed(@RequestBody CreateFeedDto createFeedDto){
         Feed feed = feedService.createFeed(createFeedDto);
         return feed;

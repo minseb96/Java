@@ -17,6 +17,8 @@ public class MemoryUserRepository implements UserRepository{
         user.setId(++sequence);
         user.setName(createUserDto.getName());
         user.setProfileImg(createUserDto.getProfileImg());
+        user.setLoginId(createUserDto.getLoginId());
+        user.setPassword(createUserDto.getPassword());
 
         db.put(user.getId(), user);
         return user;
@@ -25,5 +27,13 @@ public class MemoryUserRepository implements UserRepository{
     @Override
     public Optional<User> findById(Long id) {
         return Optional.ofNullable(db.get(id));
+    }
+
+    @Override
+    public Optional<User> findByLoginId(String loginId) {
+        return db.values()
+                .stream()
+                .filter(user -> user.getLoginId().equals(loginId))
+                .findAny();
     }
 }

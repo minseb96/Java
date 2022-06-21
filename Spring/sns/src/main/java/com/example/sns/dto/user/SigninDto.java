@@ -5,12 +5,9 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
 
-@Getter @Setter
-public class CreateUserDto {
-    @NotEmpty
-    private String name;
-    @NotEmpty
-    private String profileImg;
+@Getter
+@Setter
+public class SigninDto {
     @NotEmpty
     private String loginId;
     @NotEmpty

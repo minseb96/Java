@@ -18,7 +18,7 @@ public class MyFeedService implements FeedService{
     }
 
     @Override
-    public List<Feed> findFeed() {
+    public List<Feed> findFeeds() {
         List<Feed> feeds = feedRepository.findAll();
         return feeds;
     }
