@@ -419,7 +419,7 @@
 					</div>
 				</li>
 			</ul>
-			<div class="user-img">
+			<div class="user-img" th:if="${user != null}">
 				<img src="images/resources/admin.jpg" alt="">
 				<span class="status f-online"></span>
 				<div class="user-setting">
@@ -430,8 +430,11 @@
 					<a href="#" title=""><i class="ti-pencil-alt"></i>edit profile</a>
 					<a href="#" title=""><i class="ti-target"></i>activity log</a>
 					<a href="#" title=""><i class="ti-settings"></i>account setting</a>
-					<a href="#" title=""><i class="ti-power-off"></i>log out</a>
+					<a href="#" title="" th:onclick="|location.href='@{/users/logout}'|"><i class="ti-power-off"></i>log out</a>
 				</div>
+			</div>
+			<div class="user-img" th:unless="${user != null}">
+				<span style="width: 60px; height: 60px;" th:onclick="|location.href='@{/users/signin}'|">Login</span>
 			</div>
 			<span class="ti-menu main-menu" data-ripple=""></span>
 		</div>
@@ -519,8 +522,8 @@
 											</li>
 										</ul>
 									</div><!-- recent activites -->
-									<div class="widget stick-widget">
-										<h4 class="widget-title">Who's follownig</h4>
+									<div class="widget stick-widget" th:if="${user != null}">
+										<h4 class="widget-title">Who's following</h4>
 										<ul class="followers">
 											<li>
 												<figure><img src="images/resources/friend-avatar2.jpg" alt=""></figure>
@@ -562,13 +565,13 @@
 								</aside>
 							</div><!-- sidebar -->
 							<div class="col-lg-6">
-								<div class="central-meta">
+								<div class="central-meta" th:if="${user != null}">
 									<div class="new-postbox">
 										<figure>
 											<img src="images/resources/admin2.jpg" alt="">
 										</figure>
 										<div class="newpst-input">
-											<form method="post" th:object="${feedForm}" th:action>
+											<form method="post" th:object="${feedForm}" th:action="@{/create/feed}">
 												<textarea rows="2" placeholder="write something" th:field="*{content}"></textarea>
 												<div class="attachments">
 													<ul>
@@ -706,7 +709,7 @@
 												<li>
 													<a href="#" title="" class="showmore underline">more comments</a>
 												</li>
-												<li class="post-comment">
+												<li class="post-comment" th:if="${user != null}">
 													<div class="comet-avatar">
 														<img src="images/resources/comet-2.jpg" alt="">
 													</div>
@@ -742,7 +745,7 @@
 							</div><!-- centerl meta -->
 							<div class="col-lg-3">
 								<aside class="sidebar static">
-									<div class="widget">
+									<div class="widget" th:if="${user != null}">
 										<h4 class="widget-title">Your page</h4>	
 										<div class="your-page">
 											<figure>
@@ -834,7 +837,7 @@
 											</div>
 										</div>											
 									</div>
-									<div class="widget friend-list stick-widget">
+									<div class="widget friend-list stick-widget" th:if="${user != null}">
 										<h4 class="widget-title">Friends</h4>
 										<div id="searchDir"></div>
 										<ul id="people-list" class="friendz-list">

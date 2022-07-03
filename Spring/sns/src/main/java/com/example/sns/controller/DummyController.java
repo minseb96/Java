@@ -51,10 +51,10 @@ public class DummyController {
         final int COUNT = 2;
         for (int i=0; i< COUNT; i++){
             CreateUserDto createUserDto = new CreateUserDto();
-
             createUserDto.setName("유저" + Integer.toString(i));
             createUserDto.setProfileImg("/images/resources/friend-avatar10.jpg");
-
+            createUserDto.setLoginId("test" + Integer.toString(i));
+            createUserDto.setPassword("test" + Integer.toString(i));
             User user = userService.createUser(createUserDto);
             users.add(user);
         }

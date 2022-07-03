@@ -1,6 +1,7 @@
 package com.example.sns.controller.feed;
 
 import com.example.sns.domain.feed.Feed;
+import com.example.sns.domain.user.User;
 import com.example.sns.dto.feed.CreateFeedDto;
 import com.example.sns.dto.feed.GetFeedFullInfoDto;
 import com.example.sns.service.feed.FeedFullService;
@@ -21,9 +22,9 @@ public class FeedController {
     private final FeedService feedService;
     private final FeedFullService feedFullService;
 
-    @PostMapping
-    public String createFeed(@RequestParam String content){
-        Long myUserId = Long.valueOf(1); // TODO: get this value from session
+    @PostMapping("/create/feed")
+    public String createFeed(@SessionAttribute(name="user")User user, @RequestParam String content){
+        Long myUserId = user.getId(); // TODO: get this value from session
         String imgUrl = "/image/resources/user-post.jpg"; // TODO: modify this to image upload
 
         CreateFeedDto createFeedDto = new CreateFeedDto();
@@ -37,10 +38,11 @@ public class FeedController {
     }
 
     @GetMapping
-    public String getFeedList(Model model) {
+    public String getFeedList(@SessionAttribute(name = "user", required = false) User user, Model model) {
         List<GetFeedFullInfoDto> feeds = feedFullService.findFeedsFullInfo();
         model.addAttribute("feeds", feeds);
         model.addAttribute("feedForm", new CreateFeedDto());
+        model.addAttribute("user", user);
         return "feed/newsfeed";
     }
 
